@@ -1,0 +1,43 @@
+{
+  "name": "cesium-cloth",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Fabrice Lainard <FabriceLainardProgramming@outlook.com> (https://www.flprogramming.fr)",
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "webworker",
+      
+    ],
+    "allowJs": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "typeRoots": [
+      "./node_modules/@types",
+      "src/*"
+    ]
+  },
+  "include": [
+    "src", 
+  ],
+  "exclude": ["node_modules", "lib","**/__tests__/*"]
+  
+}
