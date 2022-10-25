@@ -128,6 +128,7 @@ export default class CesiumPage extends React.Component<{}, {}> {
       (cloth: Cloth, nbParticlesWidth: number, nbParticlesHeight: number, particlePositions: SharedArrayBuffer) => {
 
         let fixedStates: ParticleState[] = [];
+        
         // fixed particles on cloth :
         for (let x = 0; x < nbParticlesWidth; x++) {
           fixedStates.push({
