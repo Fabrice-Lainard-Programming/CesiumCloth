@@ -64,7 +64,7 @@ export default class CesiumPage extends React.Component<{}, {}> {
       viewer.scene.globe.dynamicAtmosphereLighting = true;
       viewer.scene.globe.dynamicAtmosphereLightingFromSun = true;
 
-      viewer.scene.primitives.add(createOsmBuildings());
+    //  viewer.scene.primitives.add(createOsmBuildings());
 
    
 

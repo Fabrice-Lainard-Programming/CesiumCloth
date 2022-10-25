@@ -222,7 +222,16 @@ export type ParticleState =
      * True if particle is fixed in space
      */
     isFixed : boolean;
+
+    /**
+     * Change the position of the particle
+     */
+    newPosition?: Cartesian3;
   };
+
+
+
+
 
 
 /**

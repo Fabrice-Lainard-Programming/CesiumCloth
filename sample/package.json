@@ -46,7 +46,7 @@
    
   },
   "dependencies": {
-    "cesium-cloth": "^1.1.0",
+    "cesium-cloth": "^1.1.1",
     "file-loader": "^6.2.0",
     "mathjs": "^11.3.0",
     "proj4": "^2.8.0",

@@ -533,7 +533,8 @@ export class ClothSimulation {
 
     if (clothForceAndCollisionMsg.fixedParticles) {
       clothForceAndCollisionMsg.fixedParticles.forEach((p) => {
-        this.setFixed(this.getIndex(p.particleX, p.particleY), p.isFixed);
+        this.setFixed(this.getIndex(p.particleX, p.particleY), p.isFixed, p.newPosition);
+
       })
     }
   }
@@ -621,10 +622,10 @@ export class ClothSimulation {
   private addWindNoise() {
     if (this.windNoiseStep++ % 1000 === 0) {
       const noise = 0.001;
-      const wind = new Cartesian3(this.config.wind.x,this.config.wind.y,this.config.wind.z);
+      const wind = new Cartesian3(this.config.wind.x, this.config.wind.y, this.config.wind.z);
       wind.x += noise;
       wind.y += noise;
-        this.windNoiseStep = 0;
+      this.windNoiseStep = 0;
       return wind;
     }
     return undefined;
@@ -980,10 +981,16 @@ export class ClothSimulation {
   }
 
   /**
-   * Fixes or not the particle in the space
+   * Fixes or not the particle in the space.
+   * Also Change the position of the particle if newPosition is given
    */
-  public setFixed(idx: number, isFixed: boolean) {
+  public setFixed(idx: number, isFixed: boolean, newPosition?: Cartesian3) {
     this.isPositionFixed[idx] = isFixed;
+    if (newPosition) {
+      this.particlePositions[idx] = newPosition.x;
+      this.particlePositions[idx + 1] = newPosition.y;
+      this.particlePositions[idx + 2] = newPosition.z;
+    }
   }
 
   // ------------------------------------------------------------------------------
