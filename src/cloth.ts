@@ -149,21 +149,19 @@ export default class Cloth {
         CesiumJS.Resource.createIfNeeded(config.texturePath)
           .fetchImage()
           .then((image: any) => {
-            Cloth.textureCache.set(config.texturePath!,image);
+            Cloth.textureCache.set(config.texturePath!, image);
             this.spawnWorker();
           });
       }
-      else
-      {
+      else {
         this.spawnWorker();
       }
     }
-    else
-    {
+    else {
       this.spawnWorker();
     }
 
-    
+
   }
 
 
@@ -322,7 +320,7 @@ export default class Cloth {
         textureCoordinates,
         nbParticlesWidth,
         nbParticlesHeight,
-        this.config.texturePath ? Cloth.textureCache.get(this.config.texturePath) :  undefined
+        this.config.texturePath ? Cloth.textureCache.get(this.config.texturePath) : undefined
       );
       this.viewer.scene.primitives.add(this.primitive);
     } else {
@@ -374,17 +372,65 @@ export default class Cloth {
   /**
    * Get the index of the position of a particle element (position, normal, etc)
    */
-  private getIndex(x: number, y: number): number {
+  public getIndex(x: number, y: number): number {
     return y * (this.nbParticlesWidth * 3) + x * 3;
   }
+
 
   /**
    * Gets the position of the particle
    * @param idx
    * @returns
    */
-  private getPosition(vertex: Float64Array, idx: number): Cartesian3 {
+  public getPositionByIndex(vertex: Float64Array, idx: number): Cartesian3 {
     return new Cartesian3(vertex[idx], vertex[idx + 1], vertex[idx + 2]);
+  }
+
+  /**
+    * Gets the position of the particle
+    * @param x
+    * @param y
+    * @returns
+    */
+  public getPosition(vertex: Float64Array, x: number, y: number): Cartesian3 {
+    const idx = this.getIndex(x, y);
+    return new Cartesian3(vertex[idx], vertex[idx + 1], vertex[idx + 2]);
+  }
+
+
+
+  /**
+   * Get the index frrom a spatial position
+   * @param p 
+   * @returns -1 if coordinates are outside the cloth 
+   */
+  public getIndexFromPosition(p: Cartesian3) {
+    const xAxis = Cartesian3.subtract(this.config.p2, this.config.p1, new Cartesian3);
+    const yAxis = Cartesian3.subtract(this.config.p4, this.config.p1, new Cartesian3);
+    const PAxis = Cartesian3.subtract(p, this.config.p1, new Cartesian3);
+    const POnS12 = this.projectPoint(Cartesian3.ZERO, xAxis, PAxis);
+    const POnS14 = this.projectPoint(Cartesian3.ZERO, yAxis, PAxis);
+    const X = Math.ceil(Cartesian3.magnitude(POnS12) / this.config.widthAxisParticleDistance) - 1;
+    const Y = Math.ceil(Cartesian3.magnitude(POnS14) / this.config.heightAxisParticleDistance) - 1;
+    if(X>this.nbParticlesWidth) return -1;
+    if(Y>this.nbParticlesHeight) return -1;
+    return this.getIndex(X, Y);
+  }
+
+
+  /**
+   * Project the point P on line P1,P2
+   * @param p1 
+   * @param p2 
+   * @param p 
+   * @returns 
+   */
+  private projectPoint(p1: Cartesian3, p2: Cartesian3, p: Cartesian3): Cartesian3 {
+    const AB = Cartesian3.subtract(p2, p1, new Cartesian3);
+    const AP = Cartesian3.subtract(p, p1, new Cartesian3);
+    const dot = Cartesian3.dot(AP, AB) / Cartesian3.dot(AB, AB);
+    let pos = Cartesian3.add(p1, Cartesian3.multiplyByScalar(AB, dot, new Cartesian3), new Cartesian3);
+    return pos;
   }
 
   /**
@@ -392,7 +438,7 @@ export default class Cloth {
    * @param idx
    * @returns
    */
-  private getNormal(normals: Float32Array, idx: number): Cartesian3 {
+  public getNormal(normals: Float32Array, idx: number): Cartesian3 {
     return new Cartesian3(normals[idx], normals[idx + 1], normals[idx + 2]);
   }
 
@@ -479,7 +525,7 @@ export default class Cloth {
    */
   private drawParticle(x: number, y: number, vertex: Float64Array, normals: Float32Array) {
     const idx = this.getIndex(x, y);
-    const pos = this.getPosition(vertex, idx);
+    const pos = this.getPositionByIndex(vertex, idx);
     this.pointPrimitiveCollection.add({ position: pos, color: Color.fromCssColorString('#ECC111'), pixelSize: 4 });
 
     // normal
