@@ -18,7 +18,7 @@
  */
 
 // cesium
-import { Material, Cartesian3, PolylineCollection, Viewer, PointPrimitiveCollection, Color } from 'cesium';
+import { Material, Cartesian3, Cartesian2, PolylineCollection, Viewer, PointPrimitiveCollection, Color } from 'cesium';
 const CesiumJS: any = require('cesiumSource/Cesium');
 // primitive used to draw the cloth in3D
 import { ClothPrimitive } from './cloth-primitive';
@@ -400,11 +400,23 @@ export default class Cloth {
 
 
   /**
-   * Get the index frrom a spatial position
+   * Get the index from a spatial position
    * @param p 
-   * @returns -1 if coordinates are outside the cloth 
+   * @returns index or -1 if coordinates are outside the cloth 
    */
   public getIndexFromPosition(p: Cartesian3) {
+    const c = this.getCartesianIndexFromPosition(p);
+    if (c === Cartesian2.ZERO)
+      return -1;
+    return this.getIndex(c.x, c.y);
+  }
+
+  /**
+     * Get the cartesian index (grid X,Y) from a spatial position
+     * @param p 
+     * @returns  X,Y as Cartesian2 or Cartesian2.ZERO if coordinates are outside the cloth 
+     */
+  public getCartesianIndexFromPosition(p: Cartesian3) {
     const xAxis = Cartesian3.subtract(this.config.p2, this.config.p1, new Cartesian3);
     const yAxis = Cartesian3.subtract(this.config.p4, this.config.p1, new Cartesian3);
     const PAxis = Cartesian3.subtract(p, this.config.p1, new Cartesian3);
@@ -412,9 +424,9 @@ export default class Cloth {
     const POnS14 = this.projectPoint(Cartesian3.ZERO, yAxis, PAxis);
     const X = Math.ceil(Cartesian3.magnitude(POnS12) / this.config.widthAxisParticleDistance) - 1;
     const Y = Math.ceil(Cartesian3.magnitude(POnS14) / this.config.heightAxisParticleDistance) - 1;
-    if(X>this.nbParticlesWidth) return -1;
-    if(Y>this.nbParticlesHeight) return -1;
-    return this.getIndex(X, Y);
+    if (X > this.nbParticlesWidth) return Cartesian2.ZERO;
+    if (Y > this.nbParticlesHeight) return Cartesian2.ZERO;
+    return new Cartesian2(X, Y);
   }
 
 
