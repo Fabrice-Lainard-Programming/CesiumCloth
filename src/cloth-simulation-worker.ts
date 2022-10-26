@@ -592,7 +592,7 @@ export class ClothSimulation {
   public windForce() {
     if (Cartesian3.equals(this.config.wind, Cartesian3.ZERO)) return;
 
-    let wind = this.config.wind;
+    const wind = this.config.wind;
   /*  const windNoise = this.addWindNoise();
     if (windNoise) {
       wind = windNoise;

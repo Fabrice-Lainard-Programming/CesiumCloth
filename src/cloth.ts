@@ -429,7 +429,7 @@ export default class Cloth {
     const AB = Cartesian3.subtract(p2, p1, new Cartesian3);
     const AP = Cartesian3.subtract(p, p1, new Cartesian3);
     const dot = Cartesian3.dot(AP, AB) / Cartesian3.dot(AB, AB);
-    let pos = Cartesian3.add(p1, Cartesian3.multiplyByScalar(AB, dot, new Cartesian3), new Cartesian3);
+    const pos = Cartesian3.add(p1, Cartesian3.multiplyByScalar(AB, dot, new Cartesian3), new Cartesian3);
     return pos;
   }
 
