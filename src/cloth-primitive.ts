@@ -20,7 +20,7 @@
 // private & public cesium members
 const CesiumJS: any = require('cesiumSource/Cesium');
 // associated cloth object
-import Cloth from './cloth';
+import {Cloth} from './cloth';
 
 // ------------------------------------------------------------------------------
 

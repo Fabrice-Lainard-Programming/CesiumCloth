@@ -43,7 +43,7 @@ let clothIDs: number = 0;
 
 // ------------------------------------------------------------------------------
 
-export default class Cloth {
+export class Cloth {
   /**
    * Cloth configuration
    */
