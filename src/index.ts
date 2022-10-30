@@ -18,8 +18,8 @@
  */
 
 
-export * from './cloth'
-export * from './cloth-configuration'
-export * from './cloth-handshaking'
+export {Cloth} from './cloth'
+export type {ClothConfiguration} from './cloth-configuration'
+ 
 
  
